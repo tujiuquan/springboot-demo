@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 /**
  * <p>
- *  前端控制器
+ * 前端控制器
  * </p>
  *
  * @author jinhaoxun
@@ -19,8 +19,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class TaskController {
 
+    private final ITaskService iTaskService;
+
     @Autowired
-    private ITaskService iTaskService;
+    public TaskController(ITaskService iTaskService) {
+        this.iTaskService = iTaskService;
+    }
 
     /**
      * 查询db2
