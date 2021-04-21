@@ -9,6 +9,9 @@ import org.aspectj.lang.annotation.Before;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
+/**
+ * @author quange
+ */
 @Aspect
 @Component
 @Order(-1)
@@ -19,12 +22,14 @@ public class ChangeDataSourceAspect {
      */
     @Before("@annotation(changeDataSource)")
     public void changeDataSourceType(JoinPoint point, ChangeDataSource changeDataSource) throws Throwable {
+        String dB1 = "db1";
+        String dB2 = "db2";
         String value = changeDataSource.value();
-        if (value.equals("db1")){
+        if (dB1.equals(value)) {
             DataSourceContextHolder.setDataSourceType(DataSourceType.DB1);
-        }else if (value.equals("db2")){
+        } else if (dB2.equals(value)) {
             DataSourceContextHolder.setDataSourceType(DataSourceType.DB2);
-        }else {
+        } else {
             // 默认使用db1
             DataSourceContextHolder.setDataSourceType(DataSourceType.DB1);
         }

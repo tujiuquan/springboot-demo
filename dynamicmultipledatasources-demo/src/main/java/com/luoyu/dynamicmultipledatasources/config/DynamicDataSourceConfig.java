@@ -18,8 +18,12 @@ import javax.sql.DataSource;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * basePackages 我们接口文件的地址
+ *
+ * @author quange
+ */
 @Configuration
-//basePackages 我们接口文件的地址
 @MapperScan(basePackages = "com.luoyu.dynamicmultipledatasources.mapper", sqlSessionFactoryRef = "SqlSessionFactory")
 public class DynamicDataSourceConfig {
 
@@ -43,7 +47,7 @@ public class DynamicDataSourceConfig {
 
     @Bean("dynamicDataSource")
     public DynamicDataSource dynamicDataSource(@Qualifier("db1DataSource") DataSource db1DataSource,
-                                        @Qualifier("db2DataSource") DataSource db2DataSource) {
+                                               @Qualifier("db2DataSource") DataSource db2DataSource) {
         // 这个地方是比较核心的targetDataSource集合是我们数据库和名字之间的映射
         Map<Object, Object> targetDataSource = new HashMap<>();
         targetDataSource.put(DataSourceType.DB1, db1DataSource);
@@ -61,15 +65,14 @@ public class DynamicDataSourceConfig {
     }
 
     @Bean("SqlSessionFactory")
-    public SqlSessionFactory SqlSessionFactory(@Qualifier("dynamicDataSource") DataSource dynamicDataSource, @Qualifier("mybatisplusConfiguration") org.apache.ibatis.session.Configuration configuration)
-            throws Exception {
+    public SqlSessionFactory sqlSessionFactory(@Qualifier("dynamicDataSource") DataSource dynamicDataSource,
+                                               @Qualifier("mybatisplusConfiguration") org.apache.ibatis.session.Configuration configuration) throws Exception {
         SqlSessionFactoryBean bean = new SqlSessionFactoryBean();
         bean.setDataSource(dynamicDataSource);
         // 使mybatis配置生效，加载顺序问题
         bean.setConfiguration(configuration);
-        bean.setMapperLocations(
-                // 设置我们的xml文件路径
-                new PathMatchingResourcePatternResolver().getResources("classpath*:com/luoyu/dynamicmultipledatasources/mapper/xml/*.xml"));
+        // 设置我们的xml文件路径
+        bean.setMapperLocations(new PathMatchingResourcePatternResolver().getResources("classpath*:com/luoyu/dynamicmultipledatasources/mapper/xml/*.xml"));
         bean.setTypeAliasesPackage("com.luoyu.dynamicmultipledatasources.entity");
         return bean.getObject();
     }

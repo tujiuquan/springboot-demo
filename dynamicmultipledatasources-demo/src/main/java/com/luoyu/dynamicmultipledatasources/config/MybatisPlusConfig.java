@@ -32,18 +32,6 @@ public class MybatisPlusConfig {
     }
 
     /**
-     * mybatis-plus SQL执行效率插件【生产环境可以关闭】，设置 dev test 环境开启
-     */
-//    @Bean
-//    @Profile({"dev", "qa"})
-//    public PerformanceInterceptor performanceInterceptor() {
-//        PerformanceInterceptor performanceInterceptor = new PerformanceInterceptor();
-//        performanceInterceptor.setMaxTime(1000);
-//        performanceInterceptor.setFormat(true);
-//        return performanceInterceptor;
-//    }
-
-    /**
      * 分页插件
      */
     @Bean
@@ -57,5 +45,17 @@ public class MybatisPlusConfig {
         paginationInterceptor.setCountSqlParser(new JsqlParserCountOptimize(true));
         return paginationInterceptor;
     }
+
+    /**
+     * mybatis-plus SQL执行效率插件【生产环境可以关闭】，设置 dev test 环境开启
+     */
+//    @Bean
+//    @Profile({"dev", "qa"})
+//    public PerformanceInterceptor performanceInterceptor() {
+//        PerformanceInterceptor performanceInterceptor = new PerformanceInterceptor();
+//        performanceInterceptor.setMaxTime(1000);
+//        performanceInterceptor.setFormat(true);
+//        return performanceInterceptor;
+//    }
 
 }
